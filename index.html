@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#f7f7fb" />
+  <title>편입 단어</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .header-actions{display:flex;align-items:center;gap:4px}.account-button{border:1px solid #dfe1eb;background:#fff;color:#4d63e8;border-radius:16px;padding:7px 10px;font-size:12px;font-weight:700}.add-word{border:0;background:#4d63e8;color:#fff;border-radius:12px;padding:9px 12px;font-weight:700}.word-top{display:flex;justify-content:space-between;gap:8px}.word-actions button{border:0;background:transparent;color:#4d63e8;padding:3px;font-size:12px}.word-actions .delete{color:#e35d6a}.editor{width:min(100% - 28px,500px);padding:20px;border:0;border-radius:20px}.editor form{display:grid;gap:10px}.editor input,.editor textarea{width:100%;border:1px solid #e8e8f0;border-radius:10px;padding:11px;font:inherit}.editor textarea{min-height:70px;resize:vertical}.form-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}.editor-menu{display:flex;gap:8px;justify-content:flex-end;margin-top:4px}
+  </style>
+</head>
+<body>
+  <main class="app-shell">
+    <header class="topbar">
+      <div><p class="eyebrow">TRANSFER ENGLISH</p><h1>오늘의 단어</h1></div>
+      <div class="header-actions"><button class="account-button" id="loginButton">Google 로그인</button><button class="icon-button" id="settingsButton" aria-label="데이터 메뉴">•••</button></div>
+    </header>
+
+    <section class="progress-card" aria-label="오늘 학습 현황">
+      <div><span id="todayDone">0</span><small>오늘 학습</small></div>
+      <div><span id="newCount">0</span><small>신규</small></div>
+      <div><span id="reviewCount">0</span><small>복습</small></div>
+    </section>
+
+    <section class="study-area" id="studyArea">
+      <div class="queue-label" id="queueLabel">준비 중…</div>
+      <button class="flashcard" id="flashcard" aria-label="카드를 뒤집으려면 누르세요">
+        <div class="card-inner">
+          <article class="card-face card-front">
+            <div class="tag-list" id="frontTags"></div>
+            <p class="hint">탭해서 뜻 보기</p>
+            <h2 id="wordText">단어를 불러오는 중</h2>
+            <p class="part" id="partText"></p>
+          </article>
+          <article class="card-face card-back">
+            <div class="tag-list" id="backTags"></div>
+            <p class="meaning" id="meaningText"></p>
+            <p class="example" id="exampleText"></p>
+            <div class="related"><span id="synonymText"></span><span id="relatedText"></span></div>
+          </article>
+        </div>
+      </button>
+      <div class="answer-actions" id="answerActions" hidden>
+        <button data-grade="0" class="grade again"><b>모름</b><small>오늘 다시</small></button>
+        <button data-grade="1" class="grade hard"><b>어려움</b><small>내일</small></button>
+        <button data-grade="2" class="grade good"><b>알겠음</b><small>3일 후</small></button>
+        <button data-grade="3" class="grade easy"><b>완벽</b><small>7일 후</small></button>
+      </div>
+      <div class="empty-state" id="emptyState" hidden>
+        <div class="empty-icon">✓</div><h2>오늘 할 일을 끝냈어요</h2><p>새 단어를 추가하거나 내일 다시 만나요.</p>
+        <button class="primary" id="showAllButton">전체 단어 둘러보기</button>
+      </div>
+    </section>
+
+    <nav class="bottom-nav" aria-label="화면 이동">
+      <button class="nav-item active" data-view="study">학습</button>
+      <button class="nav-item" data-view="words">단어장</button>
+      <button class="nav-item" data-view="stats">통계</button>
+    </nav>
+
+    <section class="panel" id="wordsPanel" hidden>
+      <div class="panel-header"><h2>단어장</h2><div><button id="addWordButton" class="add-word">+ 단어 추가</button><button id="closeWords" class="text-button">닫기</button></div></div>
+      <input id="searchInput" type="search" placeholder="단어, 뜻, 태그 검색" autocomplete="off" />
+      <div class="filter-row"><button class="filter active" data-filter="all">전체</button><button class="filter" data-filter="wrong">오답만</button><button class="filter" data-filter="due">오늘 복습</button></div>
+      <div class="word-list" id="wordList"></div>
+    </section>
+
+    <section class="panel" id="statsPanel" hidden>
+      <div class="panel-header"><h2>학습 통계</h2><button id="closeStats" class="text-button">닫기</button></div>
+      <div class="stats-grid" id="statsGrid"></div>
+      <h3>태그별 단어</h3><div class="tag-stats" id="tagStats"></div>
+    </section>
+
+    <dialog id="settingsDialog">
+      <div class="dialog-head"><h2>단어 데이터</h2><button id="closeSettings" class="icon-button">×</button></div>
+      <p>CSV로 단어장을 추가하거나 백업하세요. 같은 영어 단어는 자동으로 건너뜁니다.</p>
+      <label class="primary file-label">CSV 가져오기<input type="file" id="csvInput" accept=".csv,text/csv" hidden /></label>
+      <button class="secondary full" id="exportButton">CSV 내보내기</button>
+      <p class="import-result" id="importResult"></p>
+    </dialog>
+    <dialog id="wordEditor" class="editor">
+      <div class="dialog-head"><h2 id="editorTitle">단어 추가</h2><button id="closeEditor" class="icon-button">×</button></div>
+      <form id="wordForm">
+        <input name="word" placeholder="영단어 또는 표현 *" required />
+        <input name="meaning" placeholder="뜻" />
+        <div class="form-row"><input name="part_of_speech" placeholder="품사 (예: verb)" /><input name="tags" placeholder="태그 (예: Day1;중요)" /></div>
+        <textarea name="example" placeholder="예문"></textarea>
+        <input name="synonyms" placeholder="유의어 (세미콜론으로 구분 가능)" />
+        <input name="related" placeholder="관련어" />
+        <div class="editor-menu"><button type="button" id="cancelEditor" class="secondary">취소</button><button class="primary" type="submit">저장</button></div>
+      </form>
+    </dialog>
+  </main>
+  <script type="module" src="app.js"></script>
+</body>
+</html>

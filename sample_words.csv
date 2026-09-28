@@ -1,0 +1,51 @@
+word,meaning,tags
+professor,교수,Day1
+explanation,설명,Day1
+explain,설명하다,Day1
+brief,"짧은, 간결한",Day1
+concise,간결한,Day1;중요
+detailed,상세한,Day1
+accurate,정확한,Day1
+accuracy,정확성,Day1
+inaccurate,부정확한,Day1
+ambiguous,모호한,Day1;중요
+attempt,"시도, 시도하다",Day1;중요
+provide,제공하다,Day1;중요
+additional,추가적인,Day1
+reduce,줄이다,Day1;중요
+increase,증가시키다,Day1
+intensify,심화시키다,Day1
+mitigate,완화하다,Day1;중요
+ignore,무시하다,Day1
+predict,예측하다,Day1
+justify,정당화하다,Day1
+"regard A as B",A를 B로 여기다,Day1;중요
+prefer,선호하다,Day1
+tendency,경향,Day1
+tend to,~하는 경향이 있다,Day1
+influence,영향을 주다,Day1;중요
+particular,특정한,Day1
+interpret,해석하다,Day1;중요
+evidence,증거,Day1;중요
+reveal,드러내다,Day1;중요
+conceal,숨기다,Day1;중요
+weakness,약점,Day1
+assumption,가정,Day1;중요
+incorrect,잘못된,Day1
+limitation,한계,Day1;중요
+otherwise,그렇지 않으면,Day1;중요
+remain,남아 있다,Day1
+unnoticed,눈에 띄지 않은,Day1
+success,성공,Day1
+failure,실패,Day1
+frequently,자주,Day1
+encounter,"접하다, 마주치다",Day1;중요
+protect,보호하다,Day1
+belief,"믿음, 신념",Day1;중요
+existing,기존의,Day1
+according to,~에 따르면,Day1
+passage,지문,Day1
+contradict,"모순되다, 반박하다",Day1;중요
+rely on,~에 의존하다,Day1;중요
+emphasize,강조하다,Day1;중요
+selectively,선택적으로,Day1
